@@ -1,6 +1,6 @@
 package controller;
 
-import cz.fit.dpo.mvcshooter.Model;
+import model.Model;
 import java.awt.event.KeyEvent;
 
 /**
@@ -18,12 +18,16 @@ public class Controller {
 
     public void keyPressed(int key)
     {
+        System.out.println("Key pressed: " + key);
         switch(key) {
             case KeyEvent.VK_UP: 
                 model.moveCannonUp();
                 break;
             case KeyEvent.VK_DOWN: 
                 model.moveCannonDown();
+                break;
+            case KeyEvent.VK_SPACE:
+                model.createMissile();
                 break;
         }
     }
