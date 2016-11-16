@@ -4,13 +4,13 @@ import model.observer.Observer;
 import model.gameObjects.enemies.Enemy;
 import model.gameObjects.Cannon;
 import model.gameObjects.Missile;
-import view.Canvas;
 import java.util.ArrayList;
 import java.util.*;
 import model.factory.ObjectsFactory;
 import model.factory.RealisticObjectsFactory;
 import model.factory.SimpleObjectsFactory;
 import model.gameObjects.GameObject;
+import model.gameObjects.ModelInfo;
 
 /**
  *
@@ -24,27 +24,34 @@ public class Model {
     private ArrayList<Observer> observers;
     private ObjectsFactory factory;
     private int gravity;
+    private ModelInfo modelInfo;
     
     public Model(String mode) 
+    {
+        initAttributes(mode);
+        run();
+    }
+    
+    private void initAttributes(String mode) 
     {
         missiles = new ArrayList<Missile>();
         enemies = new ArrayList<Enemy>();
         cannon = new Cannon(100, 100);
         observers = new ArrayList<Observer>();
         gravity = 10;
-        if(mode.equals("SIMPLE"))
-            factory = new SimpleObjectsFactory();
-        else
-            factory = new RealisticObjectsFactory();
-        run();
+        factory = mode.equals("SIMPLE")? new SimpleObjectsFactory(): 
+                new RealisticObjectsFactory();
+        modelInfo = new ModelInfo(this);
     }
     
-    private void run()
+    private void run() 
     {
         Timer t = new Timer();
-        t.schedule(new TimerTask() {
+        t.schedule(new TimerTask() 
+        {
             @Override
-            public void run() {
+            public void run() 
+            {
                 moveGameObjects();
             }
         }, 0, 20);
@@ -57,9 +64,9 @@ public class Model {
         notifyObservers();
     }
     
-    private void moveMissiles()
+    private void moveMissiles() 
     {
-        for(Missile m: missiles)
+        for(Missile m: missiles) 
         {
             m.move(gravity);
         }
@@ -71,6 +78,61 @@ public class Model {
         {
             e.move();
         }
+    }
+
+    public void moveCannonUp() 
+    {
+        this.cannon.moveUp();
+        notifyObservers();
+    }
+
+    public void moveCannonDown() 
+    {
+        this.cannon.moveDown();
+        notifyObservers();
+    }
+    
+    public void forceUp()
+    {
+        cannon.forceUp();
+        notifyObservers();
+    }
+    
+    public void forceDown()
+    {
+        cannon.forceDown();
+        notifyObservers();
+    }
+    
+    public void angleUp()
+    {
+        cannon.angleUp();
+        notifyObservers();
+    }
+
+    public void angleDown()
+    {
+        cannon.angleDown();
+        notifyObservers();
+    }
+    
+    public void attachObserver(Observer o) 
+    {
+        this.observers.add(o);
+        System.out.println(observers);
+    }
+    
+    private void notifyObservers() 
+    {
+        for(Observer o: observers) 
+        {
+            o.handleAction();
+        }
+    }
+    public void createMissile() 
+    {
+        missiles.add(factory.createMissile(cannon.getX(), cannon.getY(), 
+                cannon.getForce(), cannon.getAngle()));
     }
     
     public Cannon getCannon() 
@@ -84,31 +146,8 @@ public class Model {
         gameObjects.add(cannon);
         gameObjects.addAll(enemies);
         gameObjects.addAll(missiles);
+        gameObjects.add(modelInfo);
         return gameObjects;
-    }
-
-    public void moveCannonUp() {
-        this.cannon.moveUp();
-        notifyObservers();
-    }
-
-    public void moveCannonDown() {
-        this.cannon.moveDown();
-        notifyObservers();
-    }
-
-    public void attachObserver(Observer o) {
-        this.observers.add(o);
-        System.out.println(observers);
-    }
-    
-    private void notifyObservers() {
-        for(Observer o: observers) {
-            o.handleAction();
-        }
-    }
-    public void createMissile() {
-        missiles.add(factory.createMissile(cannon.getX(), cannon.getY(), 20, 0));
-    }
+    }    
        
 }

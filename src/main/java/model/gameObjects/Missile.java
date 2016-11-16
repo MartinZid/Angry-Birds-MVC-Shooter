@@ -8,16 +8,17 @@ import view.GraphicsDrawer;
  *
  * @author Martin
  */
-public class Missile extends GameObject{
+public class Missile extends GameObject {
     
-    private int angle;
-    private int force;
+    private final int angle;
+    private final int force;
     private int time;
-    private int startX;
-    private int startY;
-    private MovementStrategy strategy;
+    private final int startX;
+    private final int startY;
+    private final MovementStrategy strategy;
             
-    public Missile(int x, int y, int angle, int force, MovementStrategy strategy) {
+    public Missile(int x, int y, int angle, int force, MovementStrategy strategy)
+    {
         super(x, y);
         this.angle = angle;
         this.force = force;
@@ -34,25 +35,31 @@ public class Missile extends GameObject{
     }
     
     @Override
-    public void accept(GraphicsDrawer d) {
+    public void accept(GraphicsDrawer d) 
+    {
        d.visit(this);
     }
 
-    public int getAngle() {
+    public int getAngle() 
+    {
         return angle;
     }
 
-    public int getForce() {
+    public int getForce() 
+    {
         return force;
     }   
     
-    public int getTime() {
+    public int getTime() 
+    {
         return time;
     }
-     public int getStartX() {
+     public int getStartX() 
+     {
          return startX;
      }
-     public int getStartY() {
+     public int getStartY() 
+     {
          return startY;
      }
 }

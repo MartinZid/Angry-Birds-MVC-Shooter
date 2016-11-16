@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+
 /**
  *
  * @author Ondrej Stuchlik
@@ -26,7 +27,8 @@ public class GraphicsDrawer {
     private Graphics g;
  
 
-    public GraphicsDrawer() {
+    public GraphicsDrawer() 
+    {
         try {
             cannonImage = ImageIO.read(getClass().getResourceAsStream("/images/cannon.png"));
             enemyImage1 = ImageIO.read(getClass().getResourceAsStream("/images/enemy1.png"));
@@ -44,29 +46,34 @@ public class GraphicsDrawer {
     }
         
     
-    public void visit(Cannon cannon) {
+    public void visit(Cannon cannon) 
+    {
         g.drawImage(cannonImage, 
               cannon.getX() - cannonImage.getWidth()/2, 
               cannon.getY() - cannonImage.getHeight()/2, null);
     }
     
     
-    public void visit(Missile missile) {
+    public void visit(Missile missile) 
+    {
         g.drawImage(missileImage, 
                 missile.getX() - missileImage.getWidth()/2,
                 missile.getY() - missileImage.getWidth()/2, null);
     }
     
-    public void visit(Enemy enemy) {
+    public void visit(Enemy enemy) 
+    {
         
     }
     
-    public void visit(Collision collision) {        
+    public void visit(Collision collision) 
+    {        
         
     }
     
-    public void visit(ModelInfo info) {
-        
+    public void visit(ModelInfo info) 
+    {
+        g.drawString(info.toString(), info.getX(), info.getY());
     }
     
 }

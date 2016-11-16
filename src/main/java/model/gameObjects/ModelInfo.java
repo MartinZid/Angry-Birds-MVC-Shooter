@@ -1,25 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model.gameObjects;
 
-import model.gameObjects.GameObject;
+import model.Config;
+import model.Model;
 import view.GraphicsDrawer;
 
 /**
  *
  * @author Martin
  */
-public class ModelInfo extends GameObject{
+public class ModelInfo extends GameObject {
 
-    public ModelInfo(int x, int y) {
-        super(x, y);
+    private final Model model;
+    
+    public ModelInfo(Model model) 
+    {
+        super(Config.INFO_X, Config.INFO_Y);
+        this.model = model;
+    }
+    
+    @Override
+    public String toString()
+    {
+        String str = "Angle: " + model.getCannon().getAngle()*(-1) + 
+                " Force: " + model.getCannon().getForce();
+        return str;
     }
 
     @Override
-    public void accept(GraphicsDrawer d) {
+    public void accept(GraphicsDrawer d) 
+    {
         d.visit(this);
     }
     

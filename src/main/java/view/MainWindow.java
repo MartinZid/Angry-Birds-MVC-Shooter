@@ -16,7 +16,8 @@ import javax.swing.JOptionPane;
 public class MainWindow extends JFrame {
 
 
-    public MainWindow(Model model) {
+    public MainWindow(Model model) 
+    {
         try {
             Canvas view = new Canvas(0, 0, 500, 500, model);
             final Controller controller = new Controller(model);
@@ -44,7 +45,8 @@ public class MainWindow extends JFrame {
         }
     }
     
-    public void showHelp() {
+    public void showHelp() 
+    {
         JOptionPane.showMessageDialog(this, 
               "Controls: \n"
               + "here goes some description...");

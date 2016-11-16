@@ -13,12 +13,14 @@ public class SimpleEnemy extends Enemy {
     }
 
     @Override
-    public void accept(GraphicsDrawer d) {
+    public void accept(GraphicsDrawer d) 
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void move() {
+    public void move() 
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

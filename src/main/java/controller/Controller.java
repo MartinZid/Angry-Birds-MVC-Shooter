@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
  */
 public class Controller {
     
-    private Model model;
+    private final Model model;
     
     public Controller(Model model)
     {
@@ -28,6 +28,18 @@ public class Controller {
                 break;
             case KeyEvent.VK_SPACE:
                 model.createMissile();
+                break;
+            case KeyEvent.VK_LEFT:
+                model.forceDown();
+                break;
+            case KeyEvent.VK_RIGHT:
+                model.forceUp();
+                break;
+            case KeyEvent.VK_D:
+                model.angleUp();
+                break;
+            case KeyEvent.VK_A:
+                model.angleDown();
                 break;
         }
     }

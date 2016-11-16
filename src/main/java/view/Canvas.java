@@ -15,9 +15,10 @@ import model.gameObjects.GameObject;
  */
 public class Canvas extends JPanel implements Observer { 
     GraphicsDrawer drawer = new GraphicsDrawer();
-    private Model model;
+    private final Model model;
 
-    public Canvas(int x, int y, int width, int height, Model model) {
+    public Canvas(int x, int y, int width, int height, Model model)
+    {
         this.setBackground(Color.WHITE);
         this.setDoubleBuffered(true);
         this.setLocation(x, y);
@@ -27,12 +28,14 @@ public class Canvas extends JPanel implements Observer {
         makeMeObserver();
     }
     
-    private void makeMeObserver() {
+    private void makeMeObserver() 
+    {
         model.attachObserver(this);
     }
     
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) 
+    {
         super.paintComponent(g);    
         drawer.setGraphics(g);
         
@@ -43,7 +46,8 @@ public class Canvas extends JPanel implements Observer {
     }
 
     @Override
-    public void handleAction() {
+    public void handleAction() 
+    {
         repaint();
     }
     
