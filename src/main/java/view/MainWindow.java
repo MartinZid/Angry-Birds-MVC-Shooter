@@ -8,18 +8,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.Config;
 
-/**
- *
- * @author Ondrej Stuchlik
- */
 public class MainWindow extends JFrame {
 
 
     public MainWindow(Model model) 
     {
         try {
-            Canvas view = new Canvas(0, 0, 500, 500, model);
+            Canvas view = new Canvas(0, 0, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT, model);
             final Controller controller = new Controller(model);
 
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

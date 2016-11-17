@@ -6,6 +6,7 @@ import model.gameObjects.Cannon;
 import model.gameObjects.Missile;
 import java.util.ArrayList;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import model.factory.ObjectsFactory;
 import model.factory.RealisticObjectsFactory;
 import model.factory.SimpleObjectsFactory;
@@ -36,7 +37,7 @@ public class Model {
     {
         missiles = new ArrayList<Missile>();
         enemies = new ArrayList<Enemy>();
-        cannon = new Cannon(100, 100);
+        cannon = new Cannon(Config.CANNON_START_X, Config.CANNON_START_Y);
         observers = new ArrayList<Observer>();
         gravity = 10;
         factory = mode.equals("SIMPLE")? new SimpleObjectsFactory(): 
@@ -54,7 +55,15 @@ public class Model {
             {
                 moveGameObjects();
             }
-        }, 0, 20);
+        }, 0, Config.REFRESH_RATE);
+        t.schedule(new TimerTask()
+        {
+            @Override
+            public void run() 
+            {
+                createEnemy();
+            }
+        }, 0, Config.ENEMY_SPAWN_TIME);
     }
     
     private void moveGameObjects() 
@@ -133,6 +142,40 @@ public class Model {
     {
         missiles.add(factory.createMissile(cannon.getX(), cannon.getY(), 
                 cannon.getForce(), cannon.getAngle()));
+    }
+    
+    /**
+     * If new enemy should spawn near other enemy +/- 30px, returns true.
+     * @param x
+     * @param y
+     * @return 
+     */
+    private boolean spawnTooNearOtherEnemy(int x, int y)
+    {
+        for(Enemy e: enemies)
+        {
+            if(Math.abs(e.getX() - x) < 30 && Math.abs(e.getY() - y) < 30)
+            return true;
+        }
+        return false;
+    }
+    
+    public void createEnemy()
+    {
+        //we don't we to stack in cykle
+        if(enemies.size() > 50)
+            return;
+        
+        int x;
+        int y;
+        do {
+            x = ThreadLocalRandom.current().nextInt(Config.CANNON_START_X + 50, 
+                    Config.WINDOW_WIDTH - 50 + 1);
+            y = ThreadLocalRandom.current().nextInt(50, 
+                    Config.WINDOW_HEIGHT - 50 + 1);
+        } while(spawnTooNearOtherEnemy(x, y));
+        
+        enemies.add(factory.createEnemy(x, y));
     }
     
     public Cannon getCannon() 

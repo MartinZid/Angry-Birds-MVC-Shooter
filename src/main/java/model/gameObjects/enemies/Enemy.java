@@ -9,13 +9,24 @@ import view.GraphicsDrawer;
  */
 public abstract class Enemy extends GameObject {
     
-    public Enemy(int x, int y) 
+    private int type;
+    
+    public Enemy(int x, int y, int type) 
     {
         super(x, y);
+        this.type = type;
     }
 
     @Override
-    public abstract void accept(GraphicsDrawer d);
+    public void accept(GraphicsDrawer d)
+    {
+        d.visit(this);
+    }
     
     public abstract void move();
+
+    public int getType()
+    {
+        return type;
+    }
 }

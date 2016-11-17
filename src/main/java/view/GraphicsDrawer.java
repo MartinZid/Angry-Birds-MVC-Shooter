@@ -11,10 +11,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 
-/**
- *
- * @author Ondrej Stuchlik
- */
 public class GraphicsDrawer {
     private static final int INFO_X = 5;
     private static final int INFO_Y = 15;
@@ -63,12 +59,19 @@ public class GraphicsDrawer {
     
     public void visit(Enemy enemy) 
     {
-        
+        BufferedImage enemyImage = enemy.getType() == 1 ? 
+                enemyImage1:
+                enemyImage2;
+        g.drawImage(enemyImage, 
+                enemy.getX(),
+                enemy.getY(), null);
     }
     
     public void visit(Collision collision) 
     {        
-        
+        g.drawImage(collisionImage,
+                collision.getX(),
+                collision.getY(), null);
     }
     
     public void visit(ModelInfo info) 

@@ -1,5 +1,6 @@
 package model.gameObjects;
 
+import model.Config;
 import view.GraphicsDrawer;
 
 public class Cannon extends GameObject {
@@ -9,8 +10,8 @@ public class Cannon extends GameObject {
     
     public Cannon(int x, int y) {
         super(x, y);
-        angle = -20;
-        force = 70;        
+        angle = Config.CANNON_START_ANGLE;
+        force = Config.CANNON_START_FORCE;        
     }    
     
     @Override
@@ -21,7 +22,7 @@ public class Cannon extends GameObject {
 
     public void forceUp()
     {
-        if(force+5 <= 100)
+        if(force+5 <= Config.CANNON_MAX_FORCE)
             force += 5;
     }
     
@@ -33,13 +34,13 @@ public class Cannon extends GameObject {
     
     public void angleUp()
     {
-        if(angle+5 <= 90)
+        if(angle+5 <= Config.CANNON_MAX_ANGLE)
             angle += 5;
     }
 
     public void angleDown()
     {
-        if(angle-5 >= -90)
+        if(angle-5 >= -Config.CANNON_MAX_ANGLE)
             angle -= 5;
     }
     
@@ -53,11 +54,14 @@ public class Cannon extends GameObject {
         return force;
     }
     
-    public void moveUp() {
-        this.y -= 5;
+    public void moveUp() 
+    {    
+        if(y-5 >= Config.INFO_Y + 35)
+            y -= 5;
     }
     
     public void moveDown() {
-        this.y += 5;
+        if(y+5 <= Config.WINDOW_HEIGHT - 35)
+            y += 5;
     }
 }
