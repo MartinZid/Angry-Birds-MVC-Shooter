@@ -10,6 +10,7 @@ public class Config {
     public static final int CANNON_START_Y = 100;
     public static final int CANNON_MAX_ANGLE = 90;
     public static final int CANNON_MAX_FORCE = 100;
+    public static final int DOUBLE_SHOOTING_MISSILES_ANGLE_DIFFERENCE = 10;
     
     public static final int INFO_X = 20;
     public static final int INFO_Y = 20;

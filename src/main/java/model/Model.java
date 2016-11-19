@@ -138,10 +138,15 @@ public class Model {
             o.handleAction();
         }
     }
+    
+    public void toogleCannonState()
+    {
+        cannon.toogleState();
+    }    
+    
     public void createMissile() 
     {
-        missiles.add(factory.createMissile(cannon.getX(), cannon.getY(), 
-                cannon.getForce(), cannon.getAngle()));
+        missiles.addAll(cannon.shoot(factory));
     }
     
     /**

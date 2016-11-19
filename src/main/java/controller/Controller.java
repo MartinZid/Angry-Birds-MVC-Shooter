@@ -41,6 +41,9 @@ public class Controller {
             case KeyEvent.VK_A:
                 model.angleDown();
                 break;
+            case KeyEvent.VK_SHIFT:
+                model.toogleCannonState();
+                break;
         }
     }
     
