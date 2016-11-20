@@ -8,9 +8,12 @@ import view.GraphicsDrawer;
  */
 public class Collision extends GameObject {
 
+    private int time;
+    
     public Collision(int x, int y) 
     {
         super(x, y);
+        time = 0;
     }
 
     @Override
@@ -19,4 +22,13 @@ public class Collision extends GameObject {
         d.visit(this);
     }
     
+    public int getTime()
+    {
+        return time;
+    }
+    
+    public void tickTime()
+    {
+        time++;
+    }
 }

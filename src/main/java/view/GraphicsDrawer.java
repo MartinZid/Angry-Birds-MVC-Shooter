@@ -45,7 +45,7 @@ public class GraphicsDrawer {
     public void visit(Cannon cannon) 
     {
         g.drawImage(cannonImage, 
-              cannon.getX() - cannonImage.getWidth()/2, 
+              cannon.getX(), 
               cannon.getY() - cannonImage.getHeight()/2, null);
     }
     
@@ -53,8 +53,8 @@ public class GraphicsDrawer {
     public void visit(Missile missile) 
     {
         g.drawImage(missileImage, 
-                missile.getX() - missileImage.getWidth()/2,
-                missile.getY() - missileImage.getWidth()/2, null);
+                missile.getX(),
+                missile.getY(), null);
     }
     
     public void visit(Enemy enemy) 

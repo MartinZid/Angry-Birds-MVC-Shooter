@@ -86,12 +86,12 @@ public class Cannon extends GameObject {
     
     public void moveUp() 
     {    
-        if(y-5 >= Config.INFO_Y + 35)
+        if(y-5 >= Config.INFO_Y + Config.CANNON_HEIGHT/2)
             y -= 5;
     }
     
     public void moveDown() {
-        if(y+5 <= Config.WINDOW_HEIGHT - 35)
+        if(y+5 <= Config.WINDOW_HEIGHT - Config.CANNON_HEIGHT/2)
             y += 5;
     }
 }

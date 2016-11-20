@@ -1,5 +1,6 @@
 package model.gameObjects;
 
+import model.Config;
 import model.gameObjects.GameObject;
 import model.strategy.MovementStrategy;
 import view.GraphicsDrawer;
@@ -32,6 +33,11 @@ public class Missile extends GameObject {
     {
         time++;
         strategy.move(gravity, this);
+    }
+    
+    public boolean isOnBoard()
+    {
+        return x <= Config.WINDOW_WIDTH && y <= Config.WINDOW_HEIGHT;
     }
     
     @Override

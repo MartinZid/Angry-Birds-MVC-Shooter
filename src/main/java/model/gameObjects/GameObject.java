@@ -1,4 +1,5 @@
 package model.gameObjects;
+import model.Config;
 import view.GraphicsDrawer;
 
 /**
@@ -14,6 +15,12 @@ public abstract class GameObject {
     {
         this.x = x;
         this.y = y;
+    }
+    
+    public boolean collidesWith(GameObject o)
+    {
+        return Math.abs(this.x - o.getX()) <= Config.COLLISION_SIZE &&
+                Math.abs(this.y - o.getY()) <= Config.COLLISION_SIZE;
     }
     
     public int getX()

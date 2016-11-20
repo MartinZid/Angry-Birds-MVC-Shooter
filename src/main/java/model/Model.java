@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import model.factory.ObjectsFactory;
 import model.factory.RealisticObjectsFactory;
 import model.factory.SimpleObjectsFactory;
+import model.gameObjects.Collision;
 import model.gameObjects.GameObject;
 import model.gameObjects.ModelInfo;
 
@@ -22,6 +23,7 @@ public class Model {
     private ArrayList<Missile> missiles;
     private Cannon cannon;
     private ArrayList<Enemy> enemies;
+    private ArrayList<Collision> collisions;
     private ArrayList<Observer> observers;
     private ObjectsFactory factory;
     private int gravity;
@@ -37,6 +39,7 @@ public class Model {
     {
         missiles = new ArrayList<Missile>();
         enemies = new ArrayList<Enemy>();
+        collisions = new ArrayList<Collision>();
         cannon = new Cannon(Config.CANNON_START_X, Config.CANNON_START_Y);
         observers = new ArrayList<Observer>();
         gravity = 10;
@@ -70,14 +73,56 @@ public class Model {
     {
         moveMissiles();
         moveEnemies();
+        chechCollisions();
+        decreaseCollisionsTime();
         notifyObservers();
+    }
+    
+    private void chechCollisions()
+    {
+        Iterator<Missile> missilesIterator = missiles.iterator();
+        while(missilesIterator.hasNext())
+        {
+            Missile m = missilesIterator.next();
+            Iterator<Enemy> enemiesIterator = enemies.iterator();
+            while(enemiesIterator.hasNext())
+            {
+                Enemy e = enemiesIterator.next();
+                if(m.collidesWith(e))
+                {
+                    collisions.add(new Collision(e.getX(), e.getY()));                    
+                    enemiesIterator.remove();   
+                    missilesIterator.remove();
+                }
+            }
+        }
+    }
+    
+    private void decreaseCollisionsTime()
+    {
+        Iterator<Collision> it = collisions.iterator();
+        while(it.hasNext())
+        {
+            Collision c = it.next();
+            c.tickTime();
+            if(c.getTime() > Config.COLLISION_LIFE_TIME)
+            {
+                it.remove();
+            }
+        }
     }
     
     private void moveMissiles() 
     {
-        for(Missile m: missiles) 
+        Iterator<Missile> it = missiles.iterator();
+        while(it.hasNext())
         {
+            Missile m = it.next();
             m.move(gravity);
+            if(!m.isOnBoard())
+            {
+                it.remove();
+            }
         }
     }
 
@@ -194,6 +239,7 @@ public class Model {
         gameObjects.add(cannon);
         gameObjects.addAll(enemies);
         gameObjects.addAll(missiles);
+        gameObjects.addAll(collisions);
         gameObjects.add(modelInfo);
         return gameObjects;
     }    

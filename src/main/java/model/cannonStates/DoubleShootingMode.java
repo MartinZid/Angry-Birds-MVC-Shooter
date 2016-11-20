@@ -16,9 +16,9 @@ public class DoubleShootingMode implements CannonState{
     public ArrayList<Missile> shoot(ObjectsFactory factory, Cannon cannon)
     {
         ArrayList<Missile> missiles = new ArrayList<Missile>();
-        missiles.add(factory.createMissile(cannon.getX(), cannon.getY(), cannon.getForce(), 
+        missiles.add(factory.createMissile(cannon.getX(), cannon.getY()-(Config.CANNON_HEIGHT/2), cannon.getForce(), 
                 cannon.getAngle() + Config.DOUBLE_SHOOTING_MISSILES_ANGLE_DIFFERENCE));
-        missiles.add(factory.createMissile(cannon.getX(), cannon.getY(), cannon.getForce(), 
+        missiles.add(factory.createMissile(cannon.getX(), cannon.getY()-(Config.CANNON_HEIGHT/2), cannon.getForce(), 
                 cannon.getAngle() - Config.DOUBLE_SHOOTING_MISSILES_ANGLE_DIFFERENCE));
         return missiles;
     }
