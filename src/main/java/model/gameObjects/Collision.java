@@ -15,6 +15,12 @@ public class Collision extends GameObject {
         super(x, y);
         time = 0;
     }
+    
+    public Collision(Collision collision)
+    {
+        super(collision.x, collision.y);
+        this.time = collision.time;
+    }
 
     @Override
     public void accept(GraphicsDrawer d) 

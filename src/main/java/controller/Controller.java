@@ -2,6 +2,7 @@ package controller;
 
 import model.Model;
 import java.awt.event.KeyEvent;
+import model.memento.Caretaker;
 
 /**
  *
@@ -10,10 +11,12 @@ import java.awt.event.KeyEvent;
 public class Controller {
     
     private final Model model;
+    private final Caretaker caretaker;
     
     public Controller(Model model)
     {
         this.model = model;
+        this.caretaker = new Caretaker(model);
     }
 
     public void keyPressed(int key)
@@ -43,6 +46,12 @@ public class Controller {
                 break;
             case KeyEvent.VK_SHIFT:
                 model.toogleCannonState();
+                break;
+            case KeyEvent.VK_F6:
+                caretaker.save();
+                break;
+            case KeyEvent.VK_F7:
+                caretaker.load();
                 break;
         }
     }

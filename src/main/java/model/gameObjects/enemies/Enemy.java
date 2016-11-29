@@ -1,5 +1,6 @@
 package model.gameObjects.enemies;
 
+import model.Config;
 import model.gameObjects.GameObject;
 import view.GraphicsDrawer;
 
@@ -9,24 +10,31 @@ import view.GraphicsDrawer;
  */
 public abstract class Enemy extends GameObject {
     
-    private int type;
+    protected int type;
     
     public Enemy(int x, int y, int type) 
     {
         super(x, y);
         this.type = type;
     }
-
+    
     @Override
     public void accept(GraphicsDrawer d)
     {
         d.visit(this);
     }
     
-    public abstract void move();
+    public abstract void move(int gravity);
 
     public int getType()
     {
         return type;
     }
+    
+    public boolean isOnBoard()
+    {
+        return x <= Config.WINDOW_WIDTH && y <= Config.WINDOW_HEIGHT;
+    }
+    
+    public abstract Enemy copy();
 }

@@ -24,6 +24,15 @@ public class Cannon extends GameObject {
         mode = CannonModes.SINGLE_SHOOTING;
     }    
     
+    public Cannon(Cannon cannon)
+    {
+        super(cannon.x, cannon.y);
+        this.angle = cannon.angle;
+        this.force = cannon.force;
+        this.state = cannon.state;
+        this.mode = cannon.mode;
+    }
+    
     public ArrayList<Missile> shoot(ObjectsFactory factory)
     {
         return state.shoot(factory, this);

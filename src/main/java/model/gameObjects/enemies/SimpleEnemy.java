@@ -13,6 +13,13 @@ public class SimpleEnemy extends Enemy {
     }
 
     @Override
-    public void move() {}
+    public void move(int gravity) {}
+
+    @Override
+    public Enemy copy()
+    {
+        SimpleEnemy e = new SimpleEnemy(this.x, this.y, this.type);
+        return e;
+    }
 
 }

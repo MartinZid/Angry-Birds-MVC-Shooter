@@ -28,6 +28,19 @@ public class Missile extends GameObject {
         this.startX = x;
         this.startY = y;
     }
+    
+    public Missile(Missile m)
+    {
+        super(m.x, m.y);
+        this.angle = m.angle;
+        this.force = m.force;
+        this.startX = m.startX;
+        this.startY = m.startY;
+        this.strategy = m.strategy;
+        this.time = m.time;
+        this.x = m.x;
+        this.y = m.y;
+    }
 
     public void move(int gravity)
     {
@@ -68,4 +81,5 @@ public class Missile extends GameObject {
      {
          return startY;
      }
+
 }

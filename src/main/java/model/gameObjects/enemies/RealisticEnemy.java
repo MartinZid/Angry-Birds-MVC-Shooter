@@ -14,9 +14,16 @@ public class RealisticEnemy extends Enemy{
     }
 
     @Override
-    public void move()
+    public void move(int gravity)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        y += Math.round(0.1 * gravity);
+    }
+
+    @Override
+    public Enemy copy()
+    {
+        SimpleEnemy e = new SimpleEnemy(this.x, this.y, this.type);
+        return e;
     }
 
 }

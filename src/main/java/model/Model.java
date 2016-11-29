@@ -29,6 +29,67 @@ public class Model {
     private int gravity;
     private ModelInfo modelInfo;
     
+    public class Memento
+    {
+        private ArrayList<Missile> missiles;
+        private Cannon cannon;
+        private ArrayList<Enemy> enemies;
+        private ArrayList<Collision> collisions;  
+        private int gravity;
+        
+        private Memento(Model model)
+        {
+            missiles = new ArrayList<Missile>();
+            enemies = new ArrayList<Enemy>();
+            collisions = new ArrayList<Collision>();
+            setState(model);
+        }
+        
+        private void setState(Model model)
+        {
+            for(Collision c: model.getCollisions())
+            {
+                collisions.add(new Collision(c));
+            }
+            for(Enemy e: model.getEnemies())
+            {
+                enemies.add(e.copy());
+            }
+            for(Missile m: model.getMissiles())
+            {
+                missiles.add(new Missile(m));
+            }
+            cannon = new Cannon(model.getCannon());
+            gravity = model.getGravity();
+        }
+
+        public ArrayList<Missile> getMissiles()
+        {
+            return missiles;
+        }
+
+        public Cannon getCannon()
+        {
+            return cannon;
+        }
+
+        public ArrayList<Enemy> getEnemies()
+        {
+            return enemies;
+        }
+
+        public ArrayList<Collision> getCollisions()
+        {
+            return collisions;
+        }
+
+        public int getGravity()
+        {
+            return gravity;
+        }
+
+    }
+    
     public Model(String mode) 
     {
         initAttributes(mode);
@@ -67,6 +128,35 @@ public class Model {
                 createEnemy();
             }
         }, 0, Config.ENEMY_SPAWN_TIME);
+    }
+    
+    public Memento createMemento()
+    {
+        System.out.println("Saving...");
+        return new Memento(this);
+    }
+    
+    public void setMemento(Memento memento)
+    {
+        System.out.println("Loading...");
+        collisions = new ArrayList<Collision>();
+        enemies = new ArrayList<Enemy>();
+        missiles = new ArrayList<Missile>();
+        
+        for(Collision c: memento.getCollisions())
+        {
+            collisions.add(new Collision(c));
+        }
+        for(Enemy e: memento.getEnemies())
+        {
+            enemies.add(e.copy());
+        }
+        for(Missile m: memento.getMissiles())
+        {
+            missiles.add(new Missile(m));
+        }
+        cannon = new Cannon(memento.getCannon());
+        gravity = memento.getGravity();
     }
     
     private void moveGameObjects() 
@@ -128,10 +218,16 @@ public class Model {
 
     private void moveEnemies()
     {
-        for(Enemy e: enemies)
+        Iterator<Enemy> it = enemies.iterator();
+        while(it.hasNext())
         {
-            e.move();
-        }
+            Enemy e = it.next();
+            e.move(gravity);
+            if(!e.isOnBoard())
+            {
+                it.remove();
+            }
+        }        
     }
 
     public void moveCannonUp() 
@@ -243,5 +339,25 @@ public class Model {
         gameObjects.add(modelInfo);
         return gameObjects;
     }    
+
+    public ArrayList<Missile> getMissiles()
+    {
+        return missiles;
+    }
+
+    public ArrayList<Enemy> getEnemies()
+    {
+        return enemies;
+    }
+
+    public ArrayList<Collision> getCollisions()
+    {
+        return collisions;
+    }
+
+    public int getGravity()
+    {
+        return gravity;
+    }
        
 }
