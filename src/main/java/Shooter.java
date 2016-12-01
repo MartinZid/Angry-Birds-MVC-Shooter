@@ -13,8 +13,8 @@ public class Shooter {
 
             @Override
             public void run() {
-                //String mode = "REAL";
-                String mode = "SIMPLE";
+                String mode = "REAL";
+                //String mode = "SIMPLE";
                 new MainWindow(new Model(mode)).setVisible(true);
             }
         });

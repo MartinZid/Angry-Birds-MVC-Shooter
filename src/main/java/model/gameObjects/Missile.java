@@ -1,7 +1,6 @@
 package model.gameObjects;
 
 import model.Config;
-import model.gameObjects.GameObject;
 import model.strategy.MovementStrategy;
 import view.GraphicsDrawer;
 

@@ -53,6 +53,12 @@ public class Controller {
             case KeyEvent.VK_F7:
                 caretaker.load();
                 break;
+            case KeyEvent.VK_W:
+                model.gravityUp();
+                break;
+            case KeyEvent.VK_S:
+                model.gravityDown();
+                break;
         }
     }
     

@@ -20,4 +20,7 @@ public class Config {
     
     public static final int COLLISION_SIZE = 30;
     public static final int COLLISION_LIFE_TIME = 10;
+    
+    public static final int MAX_GRAVITY = 20;
+    public static final int MIN_GRAVITY = -20;
 }

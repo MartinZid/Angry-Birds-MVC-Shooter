@@ -7,6 +7,7 @@ import model.gameObjects.Missile;
 import java.util.ArrayList;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import model.factory.ObjectsFactory;
 import model.factory.RealisticObjectsFactory;
 import model.factory.SimpleObjectsFactory;
@@ -27,17 +28,19 @@ public class Model {
     private ArrayList<Observer> observers;
     private ObjectsFactory factory;
     private int gravity;
+    private int score;
     private ModelInfo modelInfo;
     
     public class Memento
     {
-        private ArrayList<Missile> missiles;
+        private final ArrayList<Missile> missiles;
         private Cannon cannon;
-        private ArrayList<Enemy> enemies;
-        private ArrayList<Collision> collisions;  
+        private final ArrayList<Enemy> enemies;
+        private final ArrayList<Collision> collisions;  
         private int gravity;
+        private int score;
         
-        private Memento(Model model)
+        Memento(Model model)
         {
             missiles = new ArrayList<Missile>();
             enemies = new ArrayList<Enemy>();
@@ -61,31 +64,37 @@ public class Model {
             }
             cannon = new Cannon(model.getCannon());
             gravity = model.getGravity();
+            score = model.getScore();
         }
 
-        public ArrayList<Missile> getMissiles()
+        private ArrayList<Missile> getMissiles()
         {
             return missiles;
         }
 
-        public Cannon getCannon()
+        private Cannon getCannon()
         {
             return cannon;
         }
 
-        public ArrayList<Enemy> getEnemies()
+        private ArrayList<Enemy> getEnemies()
         {
             return enemies;
         }
 
-        public ArrayList<Collision> getCollisions()
+        private ArrayList<Collision> getCollisions()
         {
             return collisions;
         }
 
-        public int getGravity()
+        private int getGravity()
         {
             return gravity;
+        }
+        
+        private int getScore()
+        {
+            return score;
         }
 
     }
@@ -103,8 +112,9 @@ public class Model {
         collisions = new ArrayList<Collision>();
         cannon = new Cannon(Config.CANNON_START_X, Config.CANNON_START_Y);
         observers = new ArrayList<Observer>();
-        gravity = 10;
-        factory = mode.equals("SIMPLE")? new SimpleObjectsFactory(): 
+        gravity = mode.equals("SIMPLE") ? 0 : 10;
+        score = 0;
+        factory = mode.equals("SIMPLE") ? new SimpleObjectsFactory(): 
                 new RealisticObjectsFactory();
         modelInfo = new ModelInfo(this);
     }
@@ -157,6 +167,7 @@ public class Model {
         }
         cannon = new Cannon(memento.getCannon());
         gravity = memento.getGravity();
+        score = memento.getScore();
     }
     
     private void moveGameObjects() 
@@ -183,6 +194,7 @@ public class Model {
                     collisions.add(new Collision(e.getX(), e.getY()));                    
                     enemiesIterator.remove();   
                     missilesIterator.remove();
+                    score +=5;
                 }
             }
         }
@@ -229,6 +241,66 @@ public class Model {
             }
         }        
     }
+    
+    public void attachObserver(Observer o) 
+    {
+        this.observers.add(o);
+        System.out.println(observers);
+    }
+    
+    private void notifyObservers() 
+    {
+        for(Observer o: observers) 
+        {
+            o.handleAction();
+        }
+    }
+    
+    public void toogleCannonState()
+    {
+        cannon.toogleState();
+    }    
+    
+    public void createMissile() 
+    {
+        missiles.addAll(cannon.shoot(factory));
+    }
+    
+    /**
+     * If new enemy should spawn near other enemy +/- 30px, returns true.
+     * @param x
+     * @param y
+     * @return 
+     */
+    private boolean spawnTooNearOtherEnemy(int x, int y)
+    {
+        for(Enemy e: enemies)
+        {
+            if(Math.abs(e.getX() - x) < Config.COLLISION_SIZE
+                    && Math.abs(e.getY() - y) < Config.COLLISION_SIZE)
+            return true;
+        }
+        return false;
+    }
+    
+    public void createEnemy()
+    {
+        //we don't we to stack in cykle
+        if(enemies.size() > 50)
+            return;
+        
+        int x;
+        int y;
+        do {
+            x = ThreadLocalRandom.current().nextInt(Config.CANNON_START_X + 50, 
+                    Config.WINDOW_WIDTH - 50 + 1);
+            y = ThreadLocalRandom.current().nextInt(50, 
+                    Config.WINDOW_HEIGHT - 50 + 1);
+        } while(spawnTooNearOtherEnemy(x, y));
+        
+        enemies.add(factory.createEnemy(x, y));
+    }
+    
 
     public void moveCannonUp() 
     {
@@ -265,63 +337,17 @@ public class Model {
         cannon.angleDown();
         notifyObservers();
     }
-    
-    public void attachObserver(Observer o) 
+
+    public void gravityUp()
     {
-        this.observers.add(o);
-        System.out.println(observers);
+        if(gravity < Config.MAX_GRAVITY)
+            this.gravity++;
     }
     
-    private void notifyObservers() 
+    public void gravityDown()
     {
-        for(Observer o: observers) 
-        {
-            o.handleAction();
-        }
-    }
-    
-    public void toogleCannonState()
-    {
-        cannon.toogleState();
-    }    
-    
-    public void createMissile() 
-    {
-        missiles.addAll(cannon.shoot(factory));
-    }
-    
-    /**
-     * If new enemy should spawn near other enemy +/- 30px, returns true.
-     * @param x
-     * @param y
-     * @return 
-     */
-    private boolean spawnTooNearOtherEnemy(int x, int y)
-    {
-        for(Enemy e: enemies)
-        {
-            if(Math.abs(e.getX() - x) < 30 && Math.abs(e.getY() - y) < 30)
-            return true;
-        }
-        return false;
-    }
-    
-    public void createEnemy()
-    {
-        //we don't we to stack in cykle
-        if(enemies.size() > 50)
-            return;
-        
-        int x;
-        int y;
-        do {
-            x = ThreadLocalRandom.current().nextInt(Config.CANNON_START_X + 50, 
-                    Config.WINDOW_WIDTH - 50 + 1);
-            y = ThreadLocalRandom.current().nextInt(50, 
-                    Config.WINDOW_HEIGHT - 50 + 1);
-        } while(spawnTooNearOtherEnemy(x, y));
-        
-        enemies.add(factory.createEnemy(x, y));
+        if(gravity > Config.MIN_GRAVITY)
+            this.gravity--;
     }
     
     public Cannon getCannon() 
@@ -359,5 +385,9 @@ public class Model {
     {
         return gravity;
     }
-       
+    
+    public int getScore()
+    {
+        return score;
+    }       
 }

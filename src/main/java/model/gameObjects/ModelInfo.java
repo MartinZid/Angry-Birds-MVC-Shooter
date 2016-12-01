@@ -22,7 +22,9 @@ public class ModelInfo extends GameObject {
     public String toString()
     {
         String str = "Angle: " + model.getCannon().getAngle()*(-1) + 
-                " Force: " + model.getCannon().getForce();
+                " Force: " + model.getCannon().getForce() + 
+                " Gravity: " + model.getGravity() + 
+                " Score: " + model.getScore();
         return str;
     }
 

@@ -22,7 +22,7 @@ public class RealisticEnemy extends Enemy{
     @Override
     public Enemy copy()
     {
-        SimpleEnemy e = new SimpleEnemy(this.x, this.y, this.type);
+        RealisticEnemy e = new RealisticEnemy(this.x, this.y, this.type);
         return e;
     }
 

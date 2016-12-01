@@ -33,7 +33,7 @@ public abstract class Enemy extends GameObject {
     
     public boolean isOnBoard()
     {
-        return x <= Config.WINDOW_WIDTH && y <= Config.WINDOW_HEIGHT;
+        return y > 0-Config.COLLISION_SIZE && y <= Config.WINDOW_HEIGHT;
     }
     
     public abstract Enemy copy();
